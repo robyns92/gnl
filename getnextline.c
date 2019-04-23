@@ -6,7 +6,7 @@
 /*   By: srobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/16 12:29:50 by srobin            #+#    #+#             */
-/*   Updated: 2019/03/27 19:27:46 by srobin           ###   ########.fr       */
+/*   Updated: 2019/04/23 15:18:35 by srobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int				get_next_line(const int fd, char **line)
 //	if (fd == -1 || *line == NULL)
 //		return (-1);	
 //	save = malloc(sizeof(char) * (BUF_SIZE + 1));
-//	if (*save)
-//		*line = ft_strcpy(*line, save);
+	if (*save)
+		*line = ft_strcpy(*line, save);
 	save = readfile(fd, save);
 	i = 0;
 	if (save[i])
