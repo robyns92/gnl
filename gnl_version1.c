@@ -6,7 +6,7 @@
 /*   By: srobin <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/23 14:33:46 by srobin            #+#    #+#             */
-/*   Updated: 2019/04/24 16:50:40 by srobin           ###   ########.fr       */
+/*   Updated: 2019/04/24 16:54:27 by srobin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,12 @@ static	char	*find_end_line(const int fd, char *str)
 	return (str);
 }
 
-static char		*cut_to_next_line(char *str, int i)
-{
-	char	*tmp;
-
-	tmp = str;
-	str = ft_strdup(&str[i + !!str[i]]);
-	free(tmp);
-	return (str);
-}
 
 int				get_next_line(const int fd, char **line)
 {
 	static char *(str[OPEN_MAX]);
 	int			i;
+	char		*tmp;
 
 	if (fd < 0 || fd > OPEN_MAX || !line || read(fd, NULL, 0) < 0)
 		return (-1);
@@ -62,32 +54,23 @@ int				get_next_line(const int fd, char **line)
 		if (i == 0)
 		{
 			*line = ft_strdup("");
-			str[fd] = cut_to_next_line(str[fd], i);
+			str[fd] = change_str_adress(str[fd], i);
+		}
+		if (i == 0)
+		{
+			*line = ft_strdup("");
+			tmp = str[fd];
+			str[fd] = ft_strdup(&str[fd][i + !!str[fd][i]]);
+			free(tmp);
 		}
 		if (i > 0)
 		{
 			*line = ft_strsub(str[fd], 0, i);
-			str[fd] = cut_to_next_line(str[fd], i);
+			tmp = str[fd];
+			str[fd] = ft_strdup(&str[fd][i + !!str[fd][i]]);
+			free(tmp);
 		}
 		return (1);
 	}
-	return (0);
-}
-
-int     main(int argc, char **argv)
-{
-	char *line;
-	int fd;
-	int retour;
-	int i;
-	i = 0;
-	fd = open(argv[1], O_RDONLY);
-	while ((retour = get_next_line(fd, &line)) != 0)
-	{
-		i++;
-		ft_putendl(line);
-	}
-	free(line);
-	close(fd);
 	return (0);
 }
